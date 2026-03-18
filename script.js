@@ -1,17 +1,173 @@
+/* =========================
+   ELEMENTOS
+   ========================= */
+
+const profileForm = document.getElementById("profileForm");
+const userNameInput = document.getElementById("userName");
+
+const greetingTitle = document.getElementById("greetingTitle");
+const currentDate = document.getElementById("currentDate");
+
 const taskInput = document.getElementById("taskInput");
 const addBtn = document.getElementById("addBtn");
 const taskList = document.getElementById("taskList");
+const taskCounter = document.getElementById("taskCounter");
+const emptyMessage = document.getElementById("emptyMessage");
 
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+const changeUserBtn = document.getElementById("changeUserBtn");
 
-function saveTasks() {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
+/* =========================
+   ESTADO
+   ========================= */
+
+let tasks = getTasks();
+
+/* =========================
+   UTILITÁRIOS DE PÁGINA
+   ========================= */
+
+function isProfilePage() {
+  return window.location.pathname.includes("profile.html");
 }
 
+function isIndexPage() {
+  return window.location.pathname.includes("index.html") || window.location.pathname.endsWith("/");
+}
+
+/* =========================
+   DADOS TEMPORÁRIOS
+   ========================= */
+
+function getUser() {
+  return JSON.parse(localStorage.getItem("user")) || null;
+}
+
+function saveUser(user) {
+  localStorage.setItem("user", JSON.stringify(user));
+}
+
+function removeUser() {
+  localStorage.removeItem("user");
+}
+
+function getTasks() {
+  return JSON.parse(localStorage.getItem("tasks")) || [];
+}
+
+function saveTasks(tasksToSave) {
+  localStorage.setItem("tasks", JSON.stringify(tasksToSave));
+}
+
+/* =========================
+   PERFIL E REDIRECIONAMENTO
+   ========================= */
+
+function redirectIfNeeded() {
+  const user = getUser();
+
+  if (!user && isIndexPage()) {
+    window.location.href = "profile.html";
+    return;
+  }
+}
+
+function handleProfileForm() {
+  if (!profileForm) {
+    return;
+  }
+
+  profileForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const name = userNameInput.value.trim();
+
+    if (name === "") {
+      return;
+    }
+
+    saveUser({ name: name });
+    window.location.href = "index.html";
+  });
+}
+
+function handleChangeUser() {
+  if (!changeUserBtn) {
+    return;
+  }
+
+  changeUserBtn.addEventListener("click", function () {
+    removeUser();
+    window.location.href = "profile.html";
+  });
+}
+
+/* =========================
+   DASHBOARD
+   ========================= */
+
+function updateGreeting(name) {
+  if (!greetingTitle) {
+    return;
+  }
+
+  const hour = new Date().getHours();
+  let period = "Olá";
+
+  if (hour >= 5 && hour < 12) {
+    period = "Bom dia";
+  } else if (hour >= 12 && hour < 18) {
+    period = "Boa tarde";
+  } else {
+    period = "Boa noite";
+  }
+
+  greetingTitle.textContent = `${period}, ${name}`;
+}
+
+function updateDate() {
+  if (!currentDate) {
+    return;
+  }
+
+  const today = new Date();
+
+  const formattedDate = today.toLocaleDateString("pt-BR", {
+    weekday: "long",
+    day: "numeric",
+    month: "long"
+  });
+
+  currentDate.textContent = formattedDate;
+}
+
+function updateCounter() {
+  if (!taskCounter) {
+    return;
+  }
+
+  taskCounter.textContent = `Total: ${tasks.length}`;
+}
+
+/* =========================
+   RENDERIZAÇÃO
+   ========================= */
+
 function renderTasks() {
+  if (!taskList) {
+    return;
+  }
+
   taskList.innerHTML = "";
 
-  tasks.forEach((task, index) => {
+  if (tasks.length === 0) {
+    emptyMessage.classList.add("show");
+  } else {
+    emptyMessage.classList.remove("show");
+  }
+
+  tasks.forEach((task) => {
+    const originalIndex = tasks.findIndex(item => item.id === task.id);
+
     const li = document.createElement("li");
     li.classList.add("task-item");
 
@@ -32,22 +188,22 @@ function renderTasks() {
       const saveBtn = li.querySelector(".save-btn");
       const cancelBtn = li.querySelector(".cancel-btn");
 
-      saveBtn.addEventListener("click", () => {
+      saveBtn.addEventListener("click", function () {
         const newText = input.value.trim();
 
         if (newText === "") {
           return;
         }
 
-        tasks[index].text = newText;
-        tasks[index].editing = false;
-        saveTasks();
+        tasks[originalIndex].text = newText;
+        tasks[originalIndex].editing = false;
+        saveTasks(tasks);
         renderTasks();
       });
 
-      cancelBtn.addEventListener("click", () => {
-        tasks[index].editing = false;
-        saveTasks();
+      cancelBtn.addEventListener("click", function () {
+        tasks[originalIndex].editing = false;
+        saveTasks(tasks);
         renderTasks();
       });
     } else {
@@ -64,24 +220,34 @@ function renderTasks() {
       const editBtn = li.querySelector(".edit-btn");
       const deleteBtn = li.querySelector(".delete-btn");
 
-      completeBtn.addEventListener("click", () => {
-        toggleTask(index);
+      completeBtn.addEventListener("click", function () {
+        toggleTask(originalIndex);
       });
 
-      editBtn.addEventListener("click", () => {
-        editTask(index);
+      editBtn.addEventListener("click", function () {
+        editTask(originalIndex);
       });
 
-      deleteBtn.addEventListener("click", () => {
-        deleteTask(index);
+      deleteBtn.addEventListener("click", function () {
+        deleteTask(originalIndex);
       });
     }
 
     taskList.appendChild(li);
   });
+
+  updateCounter();
 }
 
+/* =========================
+   AÇÕES NAS TAREFAS
+   ========================= */
+
 function addTask() {
+  if (!taskInput) {
+    return;
+  }
+
   const text = taskInput.value.trim();
 
   if (text === "") {
@@ -89,40 +255,67 @@ function addTask() {
   }
 
   tasks.push({
+    id: Date.now(),
     text: text,
     completed: false,
     editing: false
   });
 
   taskInput.value = "";
-  saveTasks();
+  saveTasks(tasks);
   renderTasks();
 }
 
 function toggleTask(index) {
   tasks[index].completed = !tasks[index].completed;
-  saveTasks();
+  saveTasks(tasks);
   renderTasks();
 }
 
 function editTask(index) {
   tasks[index].editing = true;
-  saveTasks();
+  saveTasks(tasks);
   renderTasks();
 }
 
 function deleteTask(index) {
   tasks.splice(index, 1);
-  saveTasks();
+  saveTasks(tasks);
   renderTasks();
 }
 
-addBtn.addEventListener("click", addTask);
+/* =========================
+   EVENTOS
+   ========================= */
 
-taskInput.addEventListener("keydown", function (event) {
-  if (event.key === "Enter") {
-    addTask();
+function setupTaskEvents() {
+  if (addBtn) {
+    addBtn.addEventListener("click", addTask);
   }
-});
 
+  if (taskInput) {
+    taskInput.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        addTask();
+      }
+    });
+  }
+}
+
+/* =========================
+   INICIALIZAÇÃO
+   ========================= */
+
+redirectIfNeeded();
+handleProfileForm();
+handleChangeUser();
+
+const user = getUser();
+
+if (user) {
+  updateGreeting(user.name);
+}
+
+updateDate();
+setupTaskEvents();
 renderTasks();

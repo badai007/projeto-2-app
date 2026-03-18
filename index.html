@@ -3,25 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>To Do List</title>
+  <title>To Do List App</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <div class="app">
-    <header class="app-header">
-      <h1>To Do List</h1>
-      <p>Organize suas tarefas do dia</p>
+<body class="app-page">
+
+  <main class="dashboard simple-dashboard">
+    <header class="dashboard-header">
+      <div>
+        <p id="currentDate" class="current-date"></p>
+        <h1 id="greetingTitle">Olá</h1>
+        <p class="subtitle">Organize suas tarefas do dia</p>
+      </div>
+
+      <button id="changeUserBtn" class="change-user-btn">Trocar nome</button>
     </header>
 
-    <section class="task-form">
-      <input type="text" id="taskInput" placeholder="Digite uma tarefa">
-      <button id="addBtn">Adicionar</button>
+    <section class="card create-task-card">
+      <h2>Adicionar tarefa</h2>
+
+      <div class="task-form">
+        <input type="text" id="taskInput" placeholder="Digite uma tarefa">
+        <button id="addBtn">Adicionar</button>
+      </div>
     </section>
 
-    <section class="task-section">
+    <section class="card tasks-card">
+      <div class="tasks-card-header">
+        <h2>Tarefas adicionadas</h2>
+        <p id="taskCounter">Total: 0</p>
+      </div>
+
       <ul id="taskList"></ul>
+
+      <p id="emptyMessage" class="empty-message">Nenhuma tarefa adicionada ainda.</p>
     </section>
-  </div>
+  </main>
 
   <script src="script.js"></script>
 </body>
