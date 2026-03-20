@@ -16,6 +16,11 @@ const emptyMessage = document.getElementById("emptyMessage");
 
 const changeUserBtn = document.getElementById("changeUserBtn");
 
+const menuToggleBtn = document.getElementById("menuToggleBtn");
+const closeSidebarBtn = document.getElementById("closeSidebarBtn");
+const sidebar = document.getElementById("sidebar");
+const sidebarOverlay = document.getElementById("sidebarOverlay");
+
 /* =========================
    ESTADO
    ========================= */
@@ -99,6 +104,42 @@ function handleChangeUser() {
     removeUser();
     window.location.href = "profile.html";
   });
+}
+
+/* =========================
+   SIDEBAR
+   ========================= */
+
+function openSidebar() {
+  if (!sidebar || !sidebarOverlay) {
+    return;
+  }
+
+  sidebar.classList.add("active");
+  sidebarOverlay.classList.add("active");
+}
+
+function closeSidebar() {
+  if (!sidebar || !sidebarOverlay) {
+    return;
+  }
+
+  sidebar.classList.remove("active");
+  sidebarOverlay.classList.remove("active");
+}
+
+function setupSidebarEvents() {
+  if (menuToggleBtn) {
+    menuToggleBtn.addEventListener("click", openSidebar);
+  }
+
+  if (closeSidebarBtn) {
+    closeSidebarBtn.addEventListener("click", closeSidebar);
+  }
+
+  if (sidebarOverlay) {
+    sidebarOverlay.addEventListener("click", closeSidebar);
+  }
 }
 
 /* =========================
@@ -309,6 +350,7 @@ function setupTaskEvents() {
 redirectIfNeeded();
 handleProfileForm();
 handleChangeUser();
+setupSidebarEvents();
 
 const user = getUser();
 

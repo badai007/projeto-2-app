@@ -8,6 +8,22 @@
 </head>
 <body class="app-page">
 
+  <button id="menuToggleBtn" class="menu-toggle-btn">☰</button>
+
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+  <aside id="sidebar" class="sidebar hidden-sidebar">
+    <div class="sidebar-header">
+      <h2>Opções</h2>
+      <button id="closeSidebarBtn" class="close-sidebar-btn">✕</button>
+    </div>
+
+    <nav class="sidebar-menu">
+      <button class="menu-item">Tarefas adicionadas</button>
+      <button id="changeUserBtn" class="menu-item logout-btn">Trocar nome</button>
+    </nav>
+  </aside>
+
   <main class="dashboard simple-dashboard">
     <header class="dashboard-header">
       <div>
@@ -15,8 +31,6 @@
         <h1 id="greetingTitle">Olá</h1>
         <p class="subtitle">Organize suas tarefas do dia</p>
       </div>
-
-      <button id="changeUserBtn" class="change-user-btn">Trocar nome</button>
     </header>
 
     <section class="card create-task-card">
