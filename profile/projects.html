@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projetos</title>
+  <link rel="stylesheet" href="projects.css">
+</head>
+<body class="projects-page">
+  <button id="menuToggleBtn" class="menu-toggle-btn" aria-label="Abrir menu">&#9776;</button>
+
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+      <h2>Opcoes</h2>
+      <button id="closeSidebarBtn" class="close-sidebar-btn" aria-label="Fechar menu">&times;</button>
+    </div>
+
+    <nav class="sidebar-menu">
+      <a class="menu-item" href="../index/index.html">Tarefas adicionadas</a>
+      <a class="menu-item active" href="projects.html">Projetos</a>
+      <button id="changeUserBtn" class="menu-item logout-btn">Trocar nome</button>
+      
+
+    </nav>
+  </aside>
+
+  <main class="projects-layout">
+    <header class="projects-hero card">
+      <p class="section-label">Projetos</p>
+      <h1 id="projectsGreeting">Seus projetos</h1>
+      <p class="section-copy">Adicione uma ideia e ela entra na lista imediatamente.</p>
+    </header>
+
+    <section class="card create-project-card">
+      <div class="card-header">
+        <div>
+          <h2>Adicionar projeto</h2>
+          <p>Adicione seu projeto e conquiste seus sonhos!!</p>
+        </div>
+      </div>
+
+      <form id="projectForm" class="project-form">
+        <input type="text" id="projectInput" placeholder="Digite uma ideia de projeto" required>
+        <button id="addProjectBtn" type="submit">Adicionar</button>
+      </form>
+    </section>
+
+    <section class="card projects-card">
+      <div class="card-header">
+        <div>
+          <h2>Projetos adicionados</h2>
+          <p> Veja seus projetos.</p>
+        </div>
+      </div>
+
+      <div id="projectsList" class="projects-list"></div>
+    </section>
+  </main>
+
+  <script src="projects.js"></script>
+</body>
+</html>

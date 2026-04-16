@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Conta - To Do List</title>
+    <link rel="stylesheet" href="criarlogin.css">
+</head>
+<body>
+    <div class="login-container">
+        <form id="registerForm" class="login-card">
+            <h1>Criar Conta</h1>
+            <p class="subtitle">Preencha os dados para se cadastrar</p>
+
+            <div id="formMessage" class="form-message"></div>
+
+            <div class="input-group">
+                <label for="registerName">Nome Completo</label>
+                <input type="text" id="registerName" placeholder="Seu nome" required>
+            </div>
+
+            <div class="input-group">
+                <label for="registerEmail">E-mail</label>
+                <input type="email" id="registerEmail" placeholder="seu@email.com" required>
+            </div>
+
+            <div class="input-group">
+                <label for="registerPassword">Senha</label>
+                <input type="password" id="registerPassword" placeholder="Sua senha" required>
+            </div>
+
+            <button type="submit" id="submitRegisterBtn">Criar Conta</button>
+
+            <div class="footer-links">
+                <span>Já tem uma conta?</span>
+                <a href="login.html">Faça login</a>
+            </div>
+        </form>
+    </div>
+
+    <script src="criarlogin.js" defer></script>
+</body>
+</html>

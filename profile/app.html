@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - To Do List</title>
+    <link rel="stylesheet" href="criarlogin.css"> <!-- Reutilizando o CSS para manter o padrão -->
+</head>
+<body>
+    <div class="login-container">
+        <form id="profileForm" class="login-card">
+            <h1>Entrar</h1>
+            <p class="subtitle">Acesse sua conta</p>
+
+            <div id="formMessage" class="form-message"></div>
+
+            <div class="input-group">
+                <label for="userIdentifier">E-mail ou Usuário</label>
+                <input type="text" id="userIdentifier" placeholder="seu@email.com" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" placeholder="Sua senha" required>
+            </div>
+
+            <button type="submit" id="submitButton">Entrar</button>
+
+            <div class="footer-links">
+                <span>Ainda não tem conta?</span>
+                <a href="criarlogin.html">Crie uma agora</a>
+            </div>
+        </form>
+    </div>
+
+    <script src="login.js" defer></script>
+</body>
+</html>
