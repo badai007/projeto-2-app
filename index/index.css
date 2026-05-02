@@ -1,0 +1,356 @@
+
+
+:root {
+  /* Cores e Gradientes */
+  --bg-black: #050505;
+  --card-dark: rgba(18, 18, 22, 0.75);
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --purple-primary: #8b5cf6;
+  --purple-hover: #a78bfa;
+  --purple-glow: rgba(139, 92, 246, 0.3);
+  --text-main: #ffffff;
+  --text-dim: #a1a1aa;
+  --danger: #ef4444;
+  
+  /* Efeitos Especiais */
+  --gradient-purple: linear-gradient(135deg, #7c3aed 0%, #c084fc 100%);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.5);
+  --transition-smooth: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Reset e Base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  background-color: var(--bg-black);
+  color: var(--text-main);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Scrollbar Estilizada (Luz de Neon) */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--purple-primary);
+  border-radius: 10px;
+  box-shadow: 0 0 10px var(--purple-glow);
+}
+
+/* Sidebar (O Painel Lateral) */
+.sidebar {
+  position: fixed;
+  left: 0; top: 0;
+  width: 260px;
+  height: 100%;
+  background: rgba(10, 10, 12, 0.98);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid var(--border-glass);
+  transition: var(--transition-smooth);
+  z-index: 1000;
+  padding: 30px 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+.user-profile .avatar {
+  width: 48px;
+  height: 48px;
+  background: var(--gradient-purple);
+  box-shadow: 0 0 20px var(--purple-glow);
+  border-radius: 14px;
+  flex-shrink: 0;
+}
+
+.user-profile span {
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+/* Menu de Navegação */
+.nav-menu { flex-grow: 1; }
+.nav-menu ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+.nav-item {
+  padding: 14px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-dim);
+  border-left: 0px solid var(--purple-primary);
+}
+
+.nav-item:hover {
+  background: rgba(124, 58, 237, 0.1);
+  color: var(--purple-primary);
+  border-left: 4px solid var(--purple-primary);
+  transform: translateX(5px);
+}
+
+/* Layout Principal */
+.dashboard {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  transition: var(--transition-smooth);
+}
+
+/* Cards (Efeito Vidro Fumê) */
+.card {
+  background: var(--card-dark);
+  backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid var(--border-glass);
+  border-radius: 24px;
+  padding: 30px;
+  margin-bottom: 25px;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+}
+
+/* Formulário e Inputs */
+.task-form { display: flex; flex-direction: column; gap: 15px; }
+
+input[type="text"] {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-glass);
+  color: white;
+  padding: 16px;
+  border-radius: 14px;
+  font-size: 16px;
+  transition: var(--transition-smooth);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+}
+
+input[type="text"]:focus {
+  border-color: var(--purple-primary);
+  outline: none;
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 15px var(--purple-glow);
+}
+
+#addBtn {
+  background: var(--gradient-purple);
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 15px var(--purple-glow);
+}
+
+#addBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px var(--purple-glow);
+  filter: brightness(1.1);
+}
+
+/* Filtros (Segmented Control) */
+.filters {
+  display: flex;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 6px;
+  border-radius: 16px;
+  gap: 6px;
+  margin-bottom: 25px;
+  border: 1px solid var(--border-glass);
+}
+
+.filter-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  padding: 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--transition-smooth);
+}
+
+.filter-btn.active {
+  background: var(--purple-primary);
+  color: white;
+  box-shadow: 0 4px 12px var(--purple-glow);
+}
+
+/* Lista de Tarefas (Efeito Magnético) */
+li {
+  background: rgba(255, 255, 255, 0.03);
+  margin-bottom: 12px;
+  padding: 20px;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid transparent;
+  transition: var(--transition-smooth);
+}
+
+li:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--purple-glow);
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.remove-btn {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.remove-btn:hover {
+  background: var(--danger);
+  color: white;
+}
+
+/* Barra de Progresso */
+.progress-bar-bg {
+  background: rgba(255, 255, 255, 0.05);
+  height: 10px;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 15px;
+}
+
+.progress-bar-fill {
+  background: var(--gradient-purple);
+  height: 100%;
+  box-shadow: 0 0 15px var(--purple-glow);
+  transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Responsividade */
+@media (min-width: 768px) {
+  .task-form { flex-direction: row; }
+  #addBtn { width: 160px; }
+  .dashboard { margin-left: 280px; max-width: calc(100% - 320px); }
+  .menu-toggle-btn { display: none; }
+}
+
+@media (max-width: 767px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.active { transform: translateX(0); }
+  .dashboard { padding-top: 80px; }
+  .card { padding: 20px; border-radius: 18px; }
+}
+/* --- ADAPTAÇÃO MOBILE (Abaixo de 768px) --- */
+@media (max-width: 768px) {
+  
+  /* 1. Dashboard: Removemos a margem da sidebar e ajustamos o respiro lateral */
+  .dashboard {
+    margin-left: 0;
+    max-width: 100%;
+    padding: 80px 16px 40px 16px; /* Espaço para o botão flutuante do menu */
+  }
+
+  /* 2. Cards: Bordas levemente menores para ganhar espaço de tela */
+  .card {
+    padding: 20px 16px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+
+  /* 3. Task Form: Itens empilhados para facilitar o clique */
+  .task-form {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 18px; /* Input maior para facilitar a digitação no dedo */
+  }
+
+  #addBtn {
+    width: 100%;
+    padding: 18px;
+  }
+
+  /* 4. Filtros: Rolagem horizontal caso os botões sejam muitos */
+  .filters {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 8px;
+    justify-content: flex-start;
+  }
+
+  .filter-btn {
+    flex: none;
+    padding: 8px 20px;
+    min-width: 100px;
+  }
+
+  /* 5. Lista de Tarefas: Ajuste de tamanho para não apertar os textos */
+  li {
+    padding: 16px;
+    flex-direction: column; /* Tarefa em cima, botão embaixo se o texto for longo */
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .remove-btn {
+    align-self: flex-end; /* Botão de excluir fica no cantinho inferior direito */
+    width: auto;
+  }
+
+  /* 6. Sidebar Mobile: Agora ela vira um "Drawer" (Gaveta) */
+  .sidebar {
+    width: 280px;
+    transform: translateX(-100%); /* Escondida por padrão */
+    box-shadow: 20px 0 50px rgba(0,0,0,0.8);
+  }
+
+  .sidebar.active {
+    transform: translateX(0); /* Mostra quando a classe 'active' for injetada via JS */
+  }
+
+  /* 7. Menu Toggle: O botão "Hambúrguer" flutuante */
+  .menu-toggle-btn {
+    display: block;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1100;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: var(--gradient-purple);
+    box-shadow: 0 8px 20px var(--purple-glow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

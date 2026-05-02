@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>To Do List App</title>
   <link rel="stylesheet" href="index.css">
 </head>
@@ -13,12 +14,13 @@
 
   <aside id="sidebar" class="sidebar hidden-sidebar">
     <div class="sidebar-header">
-      <h2>Opcoes</h2>
+      <h2>Opções</h2>
       <button id="closeSidebarBtn" class="close-sidebar-btn" aria-label="Fechar menu">&times;</button>
     </div>
 
     <nav class="sidebar-menu">
-      <button class="menu-item">Tarefas adicionadas</button>
+      <a id="tasksNavBtn" class="menu-item active" href="#">Minhas Tarefas</a>
+      <a id="projectsNavBtn" class="menu-item" href="#">Projetos</a>
       <button id="changeUserBtn" class="menu-item logout-btn">Trocar nome</button>
     </nav>
   </aside>
@@ -27,33 +29,39 @@
     <header class="dashboard-header visible-panel">
       <div>
         <p id="currentDate" class="current-date"></p>
-        <h1 id="greetingTitle">Ola</h1>
+        <h1 id="greetingTitle">Olá</h1>
         <p class="subtitle">Organize suas tarefas do dia</p>
+      </div>
+      <div class="progress-section">
+        <div class="progress-info">
+          <span>Progresso</span>
+          <span id="progressPercentage">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div id="progressBarFill" class="progress-bar-fill"></div>
+        </div>
       </div>
     </header>
 
     <section class="card create-task-card visible-panel">
       <h2>Adicionar tarefa</h2>
-
       <div class="task-form">
-        <input type="text" id="taskInput" placeholder="Digite uma tarefa">
-        <button id="addBtn">Adicionar</button>
+        <input type="text" id="taskInput" placeholder="O que você vai realizar hoje?" aria-label="Nova tarefa">
+        <button id="addBtn" type="button">Adicionar</button>
       </div>
     </section>
 
     <section class="card tasks-card visible-panel">
-      <div class="tasks-card-header">
-        <h2>Tarefas adicionadas</h2>
-        <p id="taskCounter">Total: 0</p>
+      <div class="filters">
+        <button class="filter-btn active" data-filter="all">Todos</button>
+        <button class="filter-btn" data-filter="pending">Pendentes</button>
+        <button class="filter-btn" data-filter="completed">Concluídos</button>
       </div>
-
       <ul id="taskList"></ul>
-
       <p id="emptyMessage" class="empty-message">Nenhuma tarefa adicionada ainda.</p>
     </section>
   </main>
 
   <script src="scriptindex.js"></script>
-
 </body>
 </html>
