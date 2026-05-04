@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Elementos do DOM
+   
     const menuToggleBtn = document.getElementById('menuToggleBtn');
     const sidebar = document.getElementById('sidebar');
     const closeSidebarBtn = document.getElementById('closeSidebarBtn');
@@ -13,17 +13,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressPercentage = document.getElementById('progressPercentage');
     const filterButtons = document.querySelectorAll('.filter-btn');
 
-    // 2. Estado Global (Carregando do LocalStorage)
-    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  
+    let tasks = [];
     let currentFilter = 'all';
+    const USER_ID = 1; // Usuário fixo para testes
 
-    // 3. Configuração da Data Atual
+
     const options = { weekday: 'long', day: 'numeric', month: 'long' };
     if (currentDateEl) {
         currentDateEl.textContent = new Date().toLocaleDateString('pt-BR', options);
     }
 
-    // 4. Funções de Sidebar (Controle de Visualização)
+  
     const toggleSidebar = () => {
         sidebar.classList.toggle('hidden-sidebar');
         sidebar.classList.toggle('active');
@@ -34,20 +35,40 @@ document.addEventListener('DOMContentLoaded', () => {
     closeSidebarBtn?.addEventListener('click', toggleSidebar);
     sidebarOverlay?.addEventListener('click', toggleSidebar);
 
-    // 5. Funções de Lógica
-    window.toggleTask = (id) => {
-        tasks = tasks.map(t => t.id === String(id) ? { ...t, completed: !t.completed } : t);
-        saveAndRender();
+  
+    window.toggleTask = async (id) => {
+        const task = tasks.find(t => t.id === String(id));
+        if (!task) return;
+
+        const newStatus = task.completed ? 0 : 1;
+        task.completed = !task.completed;
+
+        try {
+            await fetch(`http://localhost:3000/api/tasks/${id}/status`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status_id: newStatus })
+            });
+            saveAndRender();
+        } catch (error) {
+            console.error('Erro ao atualizar status:', error);
+        }
     };
 
-    window.removeTask = (id) => {
-        tasks = tasks.filter(t => t.id !== String(id));
-        saveAndRender();
+    window.removeTask = async (id) => {
+        try {
+            await fetch(`http://localhost:3000/api/tasks/${id}`, {
+                method: 'DELETE'
+            });
+            tasks = tasks.filter(t => t.id !== String(id));
+            saveAndRender();
+        } catch (error) {
+            console.error('Erro ao deletar tarefa:', error);
+        }
     };
 
-    // 6. Gerenciamento de Dados e Progresso
-    function saveAndRender() {
-        localStorage.setItem('tasks', JSON.stringify(tasks));
+
+    async function saveAndRender() {
         renderTasks();
         updateProgress();
     }
@@ -61,7 +82,24 @@ document.addEventListener('DOMContentLoaded', () => {
         if (progressPercentage) progressPercentage.textContent = `${percentage}%`;
     }
 
-    // 7. Renderização da Lista
+   
+    async function fetchTasks() {
+        try {
+            const response = await fetch(`http://localhost:3000/api/tasks/${USER_ID}`);
+            const data = await response.json();
+            
+            tasks = data.map(t => ({
+                id: t.id,
+                text: t.title,
+                completed: t.status_id === 1,
+                time: t.task_time
+            }));
+            saveAndRender();
+        } catch (error) {
+            console.error('Erro ao buscar tarefas:', error);
+        }
+    }
+
     function renderTasks() {
         taskList.innerHTML = '';
         
@@ -74,7 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
         filteredTasks.forEach(task => {
             const li = document.createElement('li');
             li.className = task.completed ? 'completed' : '';
-            
             const timeSafe = task.time || "";
 
             li.innerHTML = `
@@ -107,25 +144,52 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 8. Evento de Adicionar Tarefa
-    const handleAdd = () => {
+
+    const handleAdd = async () => {
         const text = taskInput.value.trim();
         if (text) {
-            tasks.push({
+            const newTask = {
                 id: Date.now().toString(),
-                text: text,
-                completed: false,
-                time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
-            });
-            taskInput.value = '';
-            saveAndRender();
+                title: text,
+                description: 'Tarefa adicionada via interface',
+                user_id: USER_ID,
+                status_id: 0,
+                task_time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+            };
+
+            try {
+                await fetch('http://localhost:3000/api/tasks', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newTask)
+                });
+                
+                tasks.push({
+                    id: newTask.id,
+                    text: newTask.title,
+                    completed: false,
+                    time: newTask.task_time
+                });
+
+                taskInput.value = '';
+                saveAndRender();
+            } catch (error) {
+                console.error('Erro ao adicionar tarefa no banco:', error);
+            }
         }
     };
 
-    addBtn?.addEventListener('click', handleAdd);
-    taskInput?.addEventListener('keypress', (e) => e.key === 'Enter' && handleAdd());
+    addBtn?.addEventListener('click', async () => {
+        await handleAdd();
+    });
 
-    // 9. Filtros
+    taskInput?.addEventListener('keypress', async (e) => {
+        if (e.key === 'Enter') {
+            await handleAdd();
+        }
+    });
+
+  
     filterButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             filterButtons.forEach(b => b.classList.remove('active'));
@@ -135,8 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Início imediato
-    saveAndRender();
+   
+    
+    fetchTasks();
 });
-
- 
