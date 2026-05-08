@@ -1,12 +1,18 @@
 const express = require('express');
 const sql = require('mssql');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
+
+// Middlewares
 app.use(cors());
 app.use(express.json());
 
+// CONFIGURAÇÃO DE ARQUIVOS ESTÁTICOS
+// Isso faz o Node entregar seu HTML, CSS e JS automaticamente
+app.use(express.static(path.join(__dirname))); 
 
 const dbConfig = {
     server: process.env.DB_SERVER || 'localhost',
@@ -19,29 +25,24 @@ const dbConfig = {
     }
 };
 
-app.get('/api/test', async (req, res) => {
-    try {
-        let pool = await sql.connect(dbConfig);
-        res.json({ message: 'Conexão bem-sucedida' });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+// Rota para carregar o HTML principal
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// --- ROTAS DA API ---
 
 app.get('/api/tasks/:userId', async (req, res) => {
     try {
-        const { userId } = req.params;
         let pool = await sql.connect(dbConfig);
         const result = await pool.request()
-            .input('user_id', sql.Int, userId)
+            .input('user_id', sql.Int, req.params.userId)
             .query('SELECT * FROM tasks WHERE user_id = @user_id');
         res.json(result.recordset);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
-
 
 app.post('/api/tasks', async (req, res) => {
     try {
@@ -62,14 +63,12 @@ app.post('/api/tasks', async (req, res) => {
     }
 });
 
-
 app.put('/api/tasks/:id/status', async (req, res) => {
     try {
-        const { id } = req.params;
         const { status_id } = req.body;
         let pool = await sql.connect(dbConfig);
         await pool.request()
-            .input('id', sql.VarChar(50), id)
+            .input('id', sql.VarChar(50), req.params.id)
             .input('status_id', sql.Int, status_id)
             .query('UPDATE tasks SET status_id = @status_id WHERE id = @id');
         res.json({ success: true });
@@ -78,13 +77,11 @@ app.put('/api/tasks/:id/status', async (req, res) => {
     }
 });
 
-
 app.delete('/api/tasks/:id', async (req, res) => {
     try {
-        const { id } = req.params;
         let pool = await sql.connect(dbConfig);
         await pool.request()
-            .input('id', sql.VarChar(50), id)
+            .input('id', sql.VarChar(50), req.params.id)
             .query('DELETE FROM tasks WHERE id = @id');
         res.json({ success: true });
     } catch (err) {
@@ -93,4 +90,4 @@ app.delete('/api/tasks/:id', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
+app.listen(PORT, () => console.log(`Servidor ON: http://localhost:${PORT}`));
