@@ -1,96 +1,40 @@
 const express = require('express');
 const sql = require('mssql');
 const cors = require('cors');
-const path = require('path');
-require('dotenv').config();
 
 const app = express();
-
-// Middlewares
 app.use(cors());
 app.use(express.json());
 
-
-app.use(express.static(path.join(__dirname))); 
-
-
-        const dbConfig = {
-   
-    server: process.env.DB_SERVER || 'localhost', 
-    database: process.env.DB_DATABASE || 'todo_db',
-    user: process.env.DB_USER || 'sa', 
-    password: process.env.DB_PASSWORD || 'SuaSenhaAqui', 
+const dbConfig = {
+    user: 'sa', 
+    password: 'Cb26102007@#', 
+    server: 'localhost', 
+    database: 'todo_db',
     options: {
-        encrypt: false,
-        trustServerCertificate: true
-    }
+        encrypt: false, 
+        trustServerCertificate: true,
+        enableArithAbort: true
+    },
+    port: 1433
 };
-    
-;
 
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
-
-// --- ROTAS DA API ---
-
+// Rota para buscar as tarefas
 app.get('/api/tasks/:userId', async (req, res) => {
     try {
         let pool = await sql.connect(dbConfig);
-        const result = await pool.request()
-            .input('user_id', sql.Int, req.params.userId)
-            .query('SELECT * FROM tasks WHERE user_id = @user_id');
-        res.json(result.recordset);
+        let result = await pool.request()
+            .input('userId', sql.Int, req.params.userId)
+            .query("SELECT id, title, description, status FROM tasks WHERE user_id = @userId");
+        
+        res.json(result.recordset); // Retorna a lista de tarefas
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error("Erro no SQL:", err.message);
+        res.status(500).json({ error: "Erro ao buscar tarefas" });
     }
 });
 
-app.post('/api/tasks', async (req, res) => {
-    try {
-        const { id, title, description, user_id, status_id, task_time } = req.body;
-        let pool = await sql.connect(dbConfig);
-        await pool.request()
-            .input('id', sql.VarChar(50), id)
-            .input('title', sql.VarChar(150), title)
-            .input('description', sql.VarChar(255), description)
-            .input('user_id', sql.Int, user_id)
-            .input('status_id', sql.Int, status_id || 0)
-            .input('task_time', sql.VarChar(10), task_time)
-            .query(`INSERT INTO tasks (id, title, description, user_id, status_id, task_time) 
-                    VALUES (@id, @title, @description, @user_id, @status_id, @task_time)`);
-        res.status(201).json({ success: true });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
+// Rota de teste
+app.get('/api/test', (req, res) => res.json({ message: "Conexão OK!" }));
 
-app.put('/api/tasks/:id/status', async (req, res) => {
-    try {
-        const { status_id } = req.body;
-        let pool = await sql.connect(dbConfig);
-        await pool.request()
-            .input('id', sql.VarChar(50), req.params.id)
-            .input('status_id', sql.Int, status_id)
-            .query('UPDATE tasks SET status_id = @status_id WHERE id = @id');
-        res.json({ success: true });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-app.delete('/api/tasks/:id', async (req, res) => {
-    try {
-        let pool = await sql.connect(dbConfig);
-        await pool.request()
-            .input('id', sql.VarChar(50), req.params.id)
-            .query('DELETE FROM tasks WHERE id = @id');
-        res.json({ success: true });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor ON: http://localhost:${PORT}`));
+app.listen(3000, () => console.log("Servidor rodando na porta 3000"));
