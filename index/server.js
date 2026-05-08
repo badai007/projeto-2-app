@@ -10,22 +10,25 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// CONFIGURAÇÃO DE ARQUIVOS ESTÁTICOS
-// Isso faz o Node entregar seu HTML, CSS e JS automaticamente
+
 app.use(express.static(path.join(__dirname))); 
 
-const dbConfig = {
-    server: process.env.DB_SERVER || 'localhost',
+
+        const dbConfig = {
+   
+    server: process.env.DB_SERVER || 'localhost', 
     database: process.env.DB_DATABASE || 'todo_db',
-    user: process.env.DB_USER || 'seu_usuario',
-    password: process.env.DB_PASSWORD || 'sua_senha',
+    user: process.env.DB_USER || 'sa', 
+    password: process.env.DB_PASSWORD || 'SuaSenhaAqui', 
     options: {
         encrypt: false,
         trustServerCertificate: true
     }
 };
+    
+;
 
-// Rota para carregar o HTML principal
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
