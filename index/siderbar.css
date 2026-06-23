@@ -1,0 +1,117 @@
+/* --- ESTILIZAÇÃO DA SIDEBAR (siderbar.css) --- */
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 280px;
+  height: 100%;
+  /* Efeito de Vidro Fumê Alinhado com o restante do App */
+  background: rgba(10, 10, 12, 0.95);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-right: 1px solid var(--border-glass);
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  transition: var(--transition-smooth);
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+  
+  /* REGRA CRÍTICA: Faz a barra começar ESCONDIDA por padrão em qualquer resolução e força prioridade */
+  transform: translateX(-100%) !important; 
+}
+
+/* Nova classe que o JavaScript vai injetar para MOSTRAR a barra lateral */
+.sidebar.active-sidebar {
+  transform: translateX(0) !important;
+}
+
+/* Cabeçalho do Menu */
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.sidebar-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  background: var(--gradient-purple);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  .sidebar-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  background: var(--gradient-purple);
+  -webkit-background-clip: text;
+  background-clip: text; /* Adicione essa linha padrão aqui */
+  
+}
+}
+
+/* Botão de Fechar (Mobile) */
+.close-sidebar-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 28px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  display: none; /* Escondido no Desktop por padrão */
+}
+
+.close-sidebar-btn:hover {
+  color: var(--danger);
+  transform: scale(1.1);
+}
+
+/* Menu de Navegação */
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-grow: 1;
+}
+
+/* Itens do Menu (Links) */
+.menu-item {
+  text-decoration: none;
+  padding: 16px 20px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-dim);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  transition: var(--transition-smooth);
+  cursor: pointer;
+}
+
+/* Efeito de Passar o Mouse (Hover) */
+.menu-item:hover {
+  background: rgba(139, 92, 246, 0.1);
+  color: var(--purple-hover);
+  border-color: rgba(139, 92, 246, 0.2);
+  transform: translateX(5px);
+}
+
+/* Estado Ativo (Aba selecionada no momento) */
+.menu-item.active {
+  background: var(--gradient-purple);
+  color: white;
+  font-weight: 700;
+  box-shadow: 0 4px 15px var(--purple-glow);
+  border-color: transparent;
+}
+
+/* --- COMPORTAMENTO PARA DISPOSITIVOS MÓVEIS (Telas menores de 768px) --- */
+@media (max-width: 767px) {
+  .close-sidebar-btn {
+    display: block; /* Aparece o "X" para fechar no celular */
+  }
+}

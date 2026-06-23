@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To Do List App</title>
+  <link rel="stylesheet" href="cssdprincipal.css">
+  <link rel="stylesheet" href="siderbar.css">
+</head>
+<body class="app-page">
+  <button id="menuToggleBtn" class="menu-toggle-btn" aria-label="Abrir menu">&#9776;</button>
+
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+  <div id="sidebar-container"></div>
+
+  <main class="dashboard simple-dashboard">
+    
+    <div id="abaTarefas">
+      <header class="dashboard-header visible-panel">
+        <div>
+          <p id="currentDate" class="current-date"></p>
+          <h1 id="greetingTitle">Olá</h1>
+          <p class="subtitle">Organize suas tarefas do dia</p>
+        </div>
+        <div class="progress-section">
+          <div class="progress-info">
+            <span>Progresso</span>
+            <span id="progressPercentage">0%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div id="progressBarFill" class="progress-bar-fill"></div>
+          </div>
+        </div>
+      </header>
+
+      <section class="card create-task-card visible-panel">
+        <h2>Adicionar tarefa</h2>
+        <div class="task-form">
+          <input type="text" id="taskInput" placeholder="O que você vai realizar hoje?" aria-label="Nova tarefa">
+          <button id="addBtn" type="button">Adicionar</button>
+        </div>
+      </section>
+
+      <section class="card tasks-card visible-panel">
+        <div class="filters">
+          <button class="filter-btn active" data-filter="all">Todos</button>
+          <button class="filter-btn" data-filter="pending">Pendentes</button>
+          <button class="filter-btn" data-filter="completed">Concluídos</button>
+        </div>
+        <ul id="taskList"></ul>
+        <p id="emptyMessage" class="empty-message">Nenhuma tarefa encontrada.</p>
+      </section>
+    </div>
+
+    <div id="abaProjetos" style="display: none;">
+      <header class="dashboard-header visible-panel">
+        <h1>Projetos Longos</h1>
+        <p class="subtitle">Gerencie suas metas de longo prazo estruturadas</p>
+      </header>
+      
+      <section class="card visible-panel">
+        <h2>Seus Projetos</h2>
+        <p class="empty-message">Nenhum projeto estruturado ainda.</p>
+      </section>
+    </div>
+
+  </main>
+
+  <script src="scriptdprincipal.js"></script>
+</body>
+</html>
