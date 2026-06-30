@@ -384,3 +384,70 @@ input[type="text"]:focus {
     width: auto;
   }
 }
+/* Botão de Editar */
+.edit-btn {
+  background: rgba(139, 92, 246, 0.1);
+  color: var(--purple-hover);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  font-weight: 600;
+}
+
+.edit-btn:hover {
+  background: var(--purple-primary);
+  color: white;
+  box-shadow: 0 0 10px var(--purple-glow);
+}
+
+/* Botão de Salvar */
+.save-btn {
+  background: rgba(16, 185, 129, 0.1); /* Verde esmeralda suave */
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  font-weight: 600;
+}
+
+.save-btn:hover {
+  background: #10b981;
+  color: white;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+}
+
+/* Ajuste fino para o input de edição não estourar o card */
+.edit-task-input {
+  background: rgba(0, 0, 0, 0.5) !important;
+  border-color: var(--purple-primary) !important;
+}
+/* --- SLIDESHOW DE FUNDO GRADUAL --- */
+
+.bg-slideshow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -2; /* Fica atrás de absolutamente tudo no app */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  /* Conecta a animação que criamos abaixo: dura 24 segundos e roda infinito */
+  animation: mudarFundo 24s infinite ease-in-out;
+}
+
+/* Criamos uma camada escura em cima das imagens para os cards e textos continuarem legíveis */
+.bg-slideshow::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(5, 5, 5, 0.75); /* Escurece 75% da imagem de fundo */
+  z-index: -1;
+}

@@ -1,0 +1,156 @@
+:root {
+  --bg-black: #050505;
+  --card-dark: rgba(18, 18, 22, 0.75);
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --purple-primary: #8b5cf6;
+  --purple-glow: rgba(139, 92, 246, 0.3);
+  --text-main: #ffffff;
+  --text-dim: #a1a1aa;
+  --gradient-purple: linear-gradient(135deg, #7c3aed 0%, #c084fc 100%);
+  --transition-smooth: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+body {
+  margin: 0; padding: 0;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  background-color: transparent; /* Permite ver a imagem de fundo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+
+.bg-slideshow {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100vw; 
+  height: 100vh; 
+  z-index: -2;
+  background-image: url('imagen texte.jpg'); 
+  background-size: cover; 
+  background-position: center;
+  background-repeat: no-repeat;
+  
+
+  animation: mudarFundoLogin 24s infinite ease-in-out;
+}
+
+
+.bg-slideshow::after {
+  content: ""; 
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%;
+  background: rgba(5, 5, 5, 0.78); 
+  z-index: -1;
+}
+
+.login-container { 
+  width: 100%; 
+  max-width: 400px; 
+  padding: 20px; 
+}
+
+
+.auth-card {
+  background: var(--card-dark);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  border-radius: 24px;
+  padding: 40px 30px;
+  box-shadow: 0 20px 25px rgba(0,0,0,0.5);
+  transition: var(--transition-smooth);
+}
+
+
+.auth-card.escondido {
+  display: none;
+}
+
+h2 { 
+  font-size: 28px; 
+  margin-bottom: 5px; 
+  font-weight: 700; 
+}
+
+.subtitle { 
+  color: var(--text-dim); 
+  margin-bottom: 30px; 
+  font-size: 14px; 
+}
+
+.input-group { 
+  margin-bottom: 18px; 
+}
+
+input[type="text"], input[type="email"], input[type="password"] {
+  width: 100%; 
+  background: rgba(0, 0, 0, 0.4); 
+  border: 1px solid var(--border-glass);
+  color: white; 
+  padding: 16px; 
+  border-radius: 14px; 
+  font-size: 15px;
+  transition: var(--transition-smooth); 
+  box-sizing: border-box;
+}
+
+input:focus { 
+  border-color: var(--purple-primary); 
+  outline: none; 
+  box-shadow: 0 0 15px var(--purple-glow); 
+}
+
+.btn-auth {
+  width: 100%; 
+  background: var(--gradient-purple); 
+  color: white; 
+  border: none;
+  padding: 16px; 
+  border-radius: 14px; 
+  font-weight: 700; 
+  font-size: 16px;
+  cursor: pointer; 
+  margin-top: 10px; 
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 15px var(--purple-glow);
+}
+
+.btn-auth:hover { 
+  transform: translateY(-2px); 
+  filter: brightness(1.1); 
+}
+
+.switch-text { 
+  text-align: center; 
+  margin-top: 25px; 
+  color: var(--text-dim); 
+  font-size: 14px; 
+}
+
+.switch-text span { 
+  color: var(--purple-primary); 
+  font-weight: 600; 
+  cursor: pointer; 
+  transition: var(--transition-smooth); 
+}
+
+.switch-text span:hover { 
+  text-decoration: underline; 
+  color: #c084fc; 
+}
+
+
+@keyframes mudarFundoLogin {
+  0%, 20% {
+    background-image: url('imagen texte.jpg');
+  }
+ 
+  }
+
+  

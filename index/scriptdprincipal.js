@@ -2,20 +2,20 @@
 let tarefas = JSON.parse(localStorage.getItem('minhas_tarefas')) || [];
 let filtroAtual = 'todos';
 
-// Variáveis globais dos elementos do DOM (definidas na inicialização)
+
 let inputTarefa, btnAdicionar, listaTarefasElement, progressoTexto, progressBarFill;
 
 // 2. FUNÇÃO PARA CARREGAR A SIDEBAR COMPONENTIZADA
 async function carregarSidebar() {
     try {
-        // Busca o arquivo diretamente na mesma pasta, conforme sua estrutura atual
+        // Busca o esqueleto estrutural isolado no arquivo HTML da sidebar
         const response = await fetch('sidebar.html');
         if (!response.ok) throw new Error('Não foi possível carregar a sidebar.');
         
         const htmlContent = await response.text();
         document.getElementById('sidebar-container').innerHTML = htmlContent;
 
-        // Ativa os cliques e eventos de abrir/fechar a barra lateral
+        // Ativa os cliques e eventos de abrir/fechar a barra lateral após a injeção do HTML
         configurarEventosSidebar();
     } catch (erro) {
         console.error('Erro ao carregar componente da sidebar:', erro);
@@ -34,7 +34,7 @@ function configurarEventosSidebar() {
     const abaTarefas = document.getElementById('abaTarefas');
     const abaProjetos = document.getElementById('abaProjetos');
 
-    // BOTÃO DE ABRIR (Injeta a classe active-sidebar e esconde o botão para não sobrepor o texto)
+    
     if (menuToggleBtn && sidebar) {
         menuToggleBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -53,7 +53,7 @@ function configurarEventosSidebar() {
         }
     }
 
-    // BOTÃO DE FECHAR (O "X" interno da sidebar)
+  
     if (closeSidebarBtn && sidebar) {
         closeSidebarBtn.addEventListener('click', () => {
             sidebar.classList.remove('active-sidebar'); // Remove a classe e esconde a barra
@@ -71,10 +71,10 @@ function configurarEventosSidebar() {
         });
     }
 
-    // NAVEGAÇÃO ENTRE AS ABAS (Alternância de telas)
+   
     if (navTarefas && navProjetos && abaTarefas && abaProjetos) {
         
-        // Clique em Minhas Tarefas
+        // Minhas Tarefas
         navTarefas.addEventListener('click', (e) => {
             e.preventDefault();
             abaTarefas.style.display = 'block';
@@ -87,7 +87,7 @@ function configurarEventosSidebar() {
             restaurarBotaoMenu();
         });
 
-        // Clique em Projetos Longos
+        //  Projetos Longos
         navProjetos.addEventListener('click', (e) => {
             e.preventDefault();
             abaTarefas.style.display = 'none';
@@ -133,48 +133,95 @@ function excluirTarefa(id) {
     atualizarTudo();
 }
 
-// 5. FUNÇÃO DE RENDERIZAÇÃO COMPLETA (Geração do HTML das tarefas na Tela)
+// Ativa o modo de edição no objeto da tarefa
+function editarTarefa(id) {
+    tarefas = tarefas.map(t => t.id === id ? { ...t, editando: true } : t);
+    renderizar();
+}
+
+// Salva as alterações feitas no input e remove o modo de edição
+function salvarTarefa(id, novoTexto) {
+    const textoLimpo = novoTexto.trim();
+    if (textoLimpo === "") {
+        alert("NÃO DEIXE O TEXTO SOZINHO!");
+        return;
+    }
+    tarefas = tarefas.map(t => t.id === id ? { ...t, texto: textoLimpo, editando: false } : t);
+    atualizarTudo();
+}
+
+// 5. FUNÇÃO DE RENDERIZAÇÃO COMPLETA
 function renderizar() {
     if (!listaTarefasElement) return;
     listaTarefasElement.innerHTML = "";
 
-    // Filtra o array baseado no botão ativo de controle (Todos, Pendentes, Concluídos)
+    // Criar a regra de filtragem dos dados
     const tarefasFiltradas = tarefas.filter(t => {
         if (filtroAtual === 'pending') return !t.concluida;
         if (filtroAtual === 'completed') return t.concluida;
         return true;
     });
 
-    // Controla a exibição da mensagem de lista vazia
+    // Controlar o aviso de lista vazia
     const emptyMessage = document.getElementById('emptyMessage');
     if (emptyMessage) {
         emptyMessage.style.display = tarefasFiltradas.length === 0 ? 'block' : 'none';
     }
 
-    // Monta cada elemento li estruturado com o botão de check redondo
+    // Criar os elementos visuais na tela
     tarefasFiltradas.forEach(t => {
         const item = document.createElement('li');
         item.className = `tarefa-item ${t.concluida ? 'done' : ''}`;
         
-        item.innerHTML = `
-            <div class="tarefa-content">
-                <button class="btn-check ${t.concluida ? 'checked' : ''}" onclick="alternarTarefa(${t.id})">
-                    ${t.concluida ? '✓' : ''}
-                </button>
-                <div class="tarefa-texto">
-                    <p>${t.texto}</p>
-                    <small>${t.data}</small>
+        if (t.editando) {
+            // Layout dinâmico para quando estiver EDITANDO
+            item.innerHTML = `
+                <div class="tarefa-content" style="flex: 1;">
+                    <input type="text" class="edit-task-input" id="inputEdit-${t.id}" value="${t.texto}" style="width: 100%; margin: 0;">
                 </div>
-            </div>
-            <button class="remove-btn" onclick="excluirTarefa(${t.id})">Excluir</button>
-        `;
+                <div class="tarefa-actions" style="display: flex; gap: 8px;">
+                    <button class="save-btn" onclick="salvarTarefa(${t.id}, document.getElementById('inputEdit-${t.id}').value)">Salvar</button>
+                    <button class="remove-btn" onclick="excluirTarefa(${t.id})">Excluir</button>
+                </div>
+            `;
+            
+            // Foca o input automaticamente e adiciona o atalho do Enter para salvar
+            setTimeout(() => {
+                const inputEdit = document.getElementById(`inputEdit-${t.id}`);
+                if (inputEdit) {
+                    inputEdit.focus();
+                    inputEdit.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') salvarTarefa(t.id, inputEdit.value);
+                    });
+                }
+            }, 0);
+
+        } else {
+            // Layout normal de EXIBIÇÃO
+            item.innerHTML = `
+                <div class="tarefa-content">
+                    <button class="btn-check ${t.concluida ? 'checked' : ''}" onclick="alternarTarefa(${t.id})">
+                        ${t.concluida ? '✓' : ''}
+                    </button>
+                    <div class="tarefa-texto">
+                        <p>${t.texto}</p>
+                        <small>${t.data}</small>
+                    </div>
+                </div>
+                <div class="tarefa-actions" style="display: flex; gap: 8px;">
+                    <button class="edit-btn" onclick="editarTarefa(${t.id})">Editar</button>
+                    <button class="remove-btn" onclick="excluirTarefa(${t.id})">Excluir</button>
+                </div>
+            `;
+        }
+        
         listaTarefasElement.appendChild(item);
     });
 
     atualizarProgresso();
 }
 
-// Atualiza as métricas e a animação da barra visual de progresso
+// Atualiza as métricas da barra visual
 function atualizarProgresso() {
     const total = tarefas.length;
     const concluidas = tarefas.filter(t => t.concluida).length;
@@ -184,37 +231,33 @@ function atualizarProgresso() {
     if (progressBarFill) progressBarFill.style.width = `${porcentagem}%`;
 }
 
-// Sincroniza as mudanças com o LocalStorage e redesenha a interface
+// Sincroniza com LocalStorage e redesenha a UI
 function atualizarTudo() {
     localStorage.setItem('minhas_tarefas', JSON.stringify(tarefas));
     renderizar();
 }
 
-//INICIALIZAÇÃO SEGURA DO ECOSSISTEMA DO APP
+// 6. INICIALIZAÇÃO DO ECOSSISTEMA DO APP
 document.addEventListener('DOMContentLoaded', () => {
-    // Mapeia os elementos do DOM após o HTML carregar completamente
     inputTarefa = document.getElementById('taskInput');
     btnAdicionar = document.getElementById('addBtn');
     listaTarefasElement = document.getElementById('taskList');
     progressoTexto = document.getElementById('progressPercentage');
     progressBarFill = document.getElementById('progressBarFill');
 
-    // Injeta o arquivo sidebar.html de forma assíncrona
+    // Inicializa o carregamento da sidebar assíncrona
     carregarSidebar();
     
-    // Escuta cliques no botão de adicionar tarefas
     if (btnAdicionar) {
         btnAdicionar.addEventListener('click', adicionarTarefa);
     }
     
-    // Escuta a tecla Enter no campo de entrada de texto
     if (inputTarefa) {
         inputTarefa.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') adicionarTarefa();
         });
     }
 
-    // Configura os ouvintes de clique para os botões de filtros superiores (Todos, Pendentes, Concluídos)
     const botoesFiltro = document.querySelectorAll('.filter-btn');
     botoesFiltro.forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -225,6 +268,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Executa a primeira renderização dos dados salvos no LocalStorage
     renderizar();
 });

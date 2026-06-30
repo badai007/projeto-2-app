@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  
+  <title>To Do List - Autenticação</title>
+  <link rel="stylesheet" href="login.css">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>To Do List</title>
+  ...
+</head>
+<body class="login-page">
+
+  <div class="bg-slideshow"></div>
+
+  <div class="login-container">
+    
+    <div id="box-login" class="auth-card">
+      <h2>Entrar</h2>
+      <p class="subtitle">Acesse suas tarefas diárias</p>
+      
+      <form id="formLogin">
+        <div class="input-group">
+          <input type="text" id="loginEmail" placeholder="E-mail ou Usuário" required>
+        </div>
+        <div class="input-group">
+          <input type="password" id="loginSenha" placeholder="Sua Senha" required>
+        </div>
+        <button type="submit" class="btn-auth">Entrar</button>
+      </form>
+      
+      <p class="switch-text">Não tem uma conta? <span id="btnIrParaCadastro">Cadastre-se</span></p>
+    </div>
+
+    <div id="box-cadastro" class="auth-card escondido">
+      <h2>Criar Conta</h2>
+      <p class="subtitle">Comece a organizar sua rotina</p>
+      
+      <form id="formCadastro">
+        <div class="input-group">
+          <input type="text" id="cadUsuario" placeholder="Nome de Usuário" required>
+        </div>
+        <div class="input-group">
+          <input type="email" id="cadEmail" placeholder="Seu E-mail" required>
+        </div>
+        <div class="input-group">
+          <input type="password" id="cadSenha" placeholder="Crie uma Senha" required>
+        </div>
+        <button type="submit" class="btn-auth">Cadastrar</button>
+      </form>
+      
+      <p class="switch-text">Já possui uma conta? <span id="btnIrParaLogin">Faça Login</span></p>
+    </div>
+
+  </div>
+
+  <script src="login.js"></script>
+</body>
+</html>
