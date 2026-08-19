@@ -1,5 +1,5 @@
 :root {
-  /* Cores e Gradientes */
+
   --bg-black: #050505;
   --card-dark: rgba(18, 18, 22, 0.75);
   --border-glass: rgba(255, 255, 255, 0.08);
@@ -10,13 +10,13 @@
   --text-dim: #a1a1aa;
   --danger: #ef4444;
   
-  /* Efeitos Especiais */
+ 
   --gradient-purple: linear-gradient(135deg, #7c3aed 0%, #c084fc 100%);
   --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.5);
   --transition-smooth: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* Reset e Base */
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -31,7 +31,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Scrollbar Estilizada (Luz de Neon) */
+
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
@@ -40,7 +40,7 @@ body {
   box-shadow: 0 0 10px var(--purple-glow);
 }
 
-/* Layout Principal */
+
 .dashboard {
   max-width: 800px;
   margin: 0 auto;
@@ -48,7 +48,7 @@ body {
   transition: var(--transition-smooth);
 }
 
-/* Header */
+
 .dashboard-header {
   margin-bottom: 30px;
 }
@@ -60,7 +60,7 @@ body {
   color: var(--text-dim);
 }
 
-/* Cards (Efeito Vidro Fumê) */
+
 .card {
   background: var(--card-dark);
   backdrop-filter: blur(16px) saturate(180%);
@@ -81,7 +81,7 @@ body {
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
 }
 
-/* Formulário e Inputs */
+
 .task-form { display: flex; flex-direction: column; gap: 15px; }
 
 input[type="text"] {
@@ -123,7 +123,7 @@ input[type="text"]:focus {
   filter: brightness(1.1);
 }
 
-/* Filtros (Segmented Control) */
+
 .filters {
   display: flex;
   background: rgba(0, 0, 0, 0.4);
@@ -152,7 +152,7 @@ input[type="text"]:focus {
   box-shadow: 0 4px 12px var(--purple-glow);
 }
 
-/* Lista de Tarefas */
+
 #taskList {
   list-style: none;
 }
@@ -176,14 +176,14 @@ input[type="text"]:focus {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Conteúdo interno da Tarefa */
+
 .tarefa-content {
   display: flex;
   align-items: center;
   gap: 15px;
 }
 
-/* Botão Redondo de Conclusão (Check) */
+
 .btn-check {
   width: 24px;
   height: 24px;
@@ -210,7 +210,7 @@ input[type="text"]:focus {
   box-shadow: 0 0 10px var(--purple-glow);
 }
 
-/* Estilo do texto quando a tarefa é concluída */
+
 .tarefa-item.done .tarefa-texto p {
   text-decoration: line-through;
   color: var(--text-dim);
@@ -233,7 +233,7 @@ input[type="text"]:focus {
   font-size: 12px;
 }
 
-/* Botão de Excluir */
+
 .remove-btn {
   background: rgba(239, 68, 68, 0.1);
   color: var(--danger);
@@ -249,7 +249,7 @@ input[type="text"]:focus {
   color: white;
 }
 
-/* Mensagem de lista vazia */
+
 .empty-message {
   color: var(--text-dim);
   text-align: center;
@@ -257,7 +257,7 @@ input[type="text"]:focus {
   font-size: 14px;
 }
 
-/* Barra de Progresso */
+
 .progress-section {
   margin-top: 15px;
 }
@@ -285,7 +285,7 @@ input[type="text"]:focus {
   transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Botão do Menu Hambúrguer (Abertura da Sidebar) */
+
 .menu-toggle-btn {
   display: flex;
   position: fixed;
@@ -311,7 +311,7 @@ input[type="text"]:focus {
   filter: brightness(1.1);
 }
 
-/* Overlay de fundo quando a barra abre */
+
 .sidebar-overlay {
   position: fixed;
   top: 0; left: 0;
@@ -329,11 +329,11 @@ input[type="text"]:focus {
   pointer-events: auto;
 }
 
-/* --- RESPONSIVIDADE --- */
+
 @media (min-width: 768px) {
   .task-form { flex-direction: row; }
   #addBtn { width: 160px; }
-  /* Mantém margem para a área do botão fixo */
+  
   .dashboard { padding-top: 40px; }
 }
 
@@ -384,7 +384,7 @@ input[type="text"]:focus {
     width: auto;
   }
 }
-/* Botão de Editar */
+
 .edit-btn {
   background: rgba(139, 92, 246, 0.1);
   color: var(--purple-hover);
@@ -402,9 +402,9 @@ input[type="text"]:focus {
   box-shadow: 0 0 10px var(--purple-glow);
 }
 
-/* Botão de Salvar */
+
 .save-btn {
-  background: rgba(16, 185, 129, 0.1); /* Verde esmeralda suave */
+  background: rgba(16, 185, 129, 0.1); 
   color: #10b981;
   border: 1px solid rgba(16, 185, 129, 0.2);
   padding: 8px 16px;
@@ -420,12 +420,12 @@ input[type="text"]:focus {
   box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
 }
 
-/* Ajuste fino para o input de edição não estourar o card */
+
 .edit-task-input {
   background: rgba(0, 0, 0, 0.5) !important;
   border-color: var(--purple-primary) !important;
 }
-/* --- SLIDESHOW DE FUNDO GRADUAL --- */
+
 
 .bg-slideshow {
   position: fixed;
@@ -433,21 +433,21 @@ input[type="text"]:focus {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: -2; /* Fica atrás de absolutamente tudo no app */
+  z-index: -2; 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   
-  /* Conecta a animação que criamos abaixo: dura 24 segundos e roda infinito */
+  
   animation: mudarFundo 24s infinite ease-in-out;
 }
 
-/* Criamos uma camada escura em cima das imagens para os cards e textos continuarem legíveis */
+
 .bg-slideshow::after {
   content: "";
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: rgba(5, 5, 5, 0.75); /* Escurece 75% da imagem de fundo */
+  background: rgba(5, 5, 5, 0.75); 
   z-index: -1;
 }
