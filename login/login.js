@@ -5,9 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnIrParaCadastro = document.getElementById('btnIrParaCadastro');
     const btnIrParaLogin = document.getElementById('btnIrParaLogin');
 
-    // ==========================================
-    // 1. ALTERNÂNCIA VISUAL (LOGIN / CADASTRO)
-    // ==========================================
+   
     if (btnIrParaCadastro) {
         btnIrParaCadastro.addEventListener('click', () => {
             boxLogin.classList.add('escondido');
@@ -22,14 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ==========================================
-    // 2. COMUNICAÇÃO COM O BACKEND PYTHON (LOGIN)
-    // ==========================================
+  
     const formLogin = document.getElementById('formLogin');
     if (formLogin) {
         formLogin.addEventListener('submit', async (e) => {
-            e.preventDefault(); // Impede o navegador de recarregar a página
-            
+            e.preventDefault(); 
             console.log("Formulário de login detectado. Coletando dados...");
             const emailInput = document.getElementById('loginEmail').value;
             const senhaInput = document.getElementById('loginSenha').value;
@@ -47,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (response.ok) {
                     alert(`Bem-vindo de volta, ${dados.usuario}!`);
                     
-                    // Salva o estado da sessão no navegador antes de entrar
+                  
                     localStorage.setItem('usuario_logado', dados.usuario);
                     
                     window.location.href = '../index/telaprincipal.html';
@@ -61,13 +56,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ==========================================
-    // 3. COMUNICAÇÃO COM O BACKEND (CADASTRO + LOGIN DIRETO)
-    // ==========================================
+    
     const formCadastro = document.getElementById('formCadastro');
     if (formCadastro) {
         formCadastro.addEventListener('submit', async (e) => {
-            e.preventDefault(); // Impede o navegador de recarregar a página
+            e.preventDefault(); 
             
             console.log("Formulário de cadastro detectado. Coletando dados...");
             const userInput = document.getElementById('cadUsuario').value;
@@ -91,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     localStorage.setItem('usuario_logado', userInput);
                     
-                    // Redireciona para o dashboard de tarefas
+                    
                     window.location.href = '../index/telaprincipal.html';
                 } else {
                     alert(dados.erro);
