@@ -1,4 +1,5 @@
 Task Manager & To-Do List
+
 Aplicação de gerenciamento de tarefas desenvolvida para praticar a integração entre um front-end em JavaScript Vanilla, consumo de APIs REST (Node.js e Flask) e persistência em banco relacional SQL Server
 
 O que o projeto faz
