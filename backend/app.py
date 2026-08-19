@@ -24,7 +24,7 @@ def salvar_usuarios(usuarios):
     with open(ARQUIVO_BD, 'w', encoding='utf-8') as f:
         json.dump(usuarios, f, indent=4, ensure_ascii=False)
 
-# === ROTA DE CADASTRO ===
+
 
 
 @app.route('/api/cadastro', methods=['POST'])
@@ -36,19 +36,18 @@ def cadastrar():
 
     usuarios = ler_usuarios()
 
-    # Validação impede e-mails duplicados
+    
     for u in usuarios:
         if u['email'] == email:
             return jsonify({"erro": "Este e-mail já está cadastrado!"}), 400
 
-    # Armazena o novo usuário no array
+    
     novo_usuario = {"usuario": usuario, "email": email, "senha": senha}
     usuarios.append(novo_usuario)
     salvar_usuarios(usuarios)
 
     return jsonify({"sucesso": "Conta criada com sucesso!"}), 201
 
-# === ROTA DE LOGIN ===
 
 
 @app.route('/api/login', methods=['POST'])
@@ -59,7 +58,7 @@ def login():
 
     usuarios = ler_usuarios()
 
-    # Varre o arquivo procurando as credenciais baterem
+  
     for u in usuarios:
         if (u['email'] == email_ou_user or u['usuario'] == email_ou_user) and u['senha'] == senha:
             return jsonify({"sucesso": "Login autorizado!", "usuario": u['usuario']}), 200
