@@ -19,7 +19,7 @@ const dbConfig = {
     port: 1433
 };
 
-// Rota para buscar as tarefas
+
 app.get('/api/tasks/:userId', async (req, res) => {
     try {
         let pool = await sql.connect(dbConfig);
@@ -27,7 +27,7 @@ app.get('/api/tasks/:userId', async (req, res) => {
             .input('userId', sql.Int, req.params.userId)
             .query("SELECT id, title, description, status FROM tasks WHERE user_id = @userId");
         
-        res.json(result.recordset); // Retorna a lista de tarefas
+        res.json(result.recordset); 
     } catch (err) {
         console.error("Erro no SQL:", err.message);
         res.status(500).json({ error: "Erro ao buscar tarefas" });
